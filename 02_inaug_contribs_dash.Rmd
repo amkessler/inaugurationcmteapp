@@ -222,7 +222,3 @@ Row {data-height=1000}
 
 ```
 
-
-FEC original pdf file
-=====================================
-Click here to view the original pdf filing submitted to the FEC by the Trump inaugural committee. [I'm an inline-style link with title](https://www.google.com "Google's Homepage")
