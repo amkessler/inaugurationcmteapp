@@ -1,0 +1,134 @@
+---
+title: "Trump Inauguration Contributions"
+resource_files:
+- .httr-oauth
+output:
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+    theme: cerulean
+
+---
+
+```{r setup, include=FALSE}
+
+library(flexdashboard)
+library(tidyverse)
+library(lubridate)
+library(janitor)
+library(glue)
+library(plotly)
+library(DT)
+library(googlesheets)
+library(kableExtra)
+library(leaflet)
+# library(ggmap)
+library(RColorBrewer)
+library(htmlwidgets)
+library(htmltools)
+library(tigris)
+options(tigris_class = "sf")
+
+
+#load data from rds file created in step 01
+contribs <- readRDS("contribs_saved.rds")
+
+
+```
+
+
+
+
+
+Donors to 2017 Inauguration 
+=====================================
+To filter, click on the boxes at the top of the columns. To sort, use the up/down arrows by the column names. (Click [here](https://www.dropbox.com/s/249a7wvb4goj0rn/fec_doc_trump_inaug_1.pdf?dl=1) for original FEC pdf document.) 
+
+Row 
+-----------------------------------------------------------------------
+
+```{r}
+
+contribs_inaug_only <- contribs %>% 
+  select(
+    individual_or_organization,
+    contributor_name,
+    org_name,
+    parent_company,
+    city,
+    state,
+    total_amount = inaug_2017_total
+  ) %>% 
+  mutate(
+    individual_or_organization = as.factor(str_to_upper(individual_or_organization)),
+    org_name = str_to_upper(org_name),
+    parent_company = str_to_upper(parent_company)
+  ) %>% 
+  arrange(individual_or_organization, desc(total_amount))
+
+
+datatable(contribs_inaug_only,
+          rownames = FALSE,
+          filter = "top",
+          extensions = 'Buttons', 
+          options = list(searchHighlight = TRUE, bPaginate = FALSE, dom = 'Bfrtip',
+       buttons = c('copy', 'csv', 'excel', 'print')
+          )) %>% 
+      formatCurrency('total_amount', digits = 0) %>% 
+      formatStyle("total_amount", color = "darkgreen") %>% 
+      formatStyle('contributor_name', fontWeight = 'bold') 
+      # formatStyle("salary", color = "darkred") %>% 
+    #   formatStyle(
+    #   'inaug_2017_total',
+    #   background = styleColorBar(contribs_table$inaug_2017_total, 'steelblue'),
+    #   backgroundSize = '100% 90%',
+    #   backgroundRepeat = 'no-repeat',
+    #   backgroundPosition = 'center'
+    # )
+
+
+```
+
+Row
+-----------------------------------------------------------------------
+
+### Box 1
+
+```{r}
+valueBox("15", icon = "fa-pencil")
+
+```
+
+### Box 2
+
+```{r}
+valueBox("15", icon = "fa-pencil")
+
+```
+
+### Box 3
+
+```{r}
+valueBox("15", icon = "fa-pencil")
+
+```
+
+
+
+Previous donor activities
+=====================================
+To filter, click on the boxes at the top of the columns. To sort, use the up/down arrows by the column names.
+
+Row {data-height=1000}
+-----------------------------------------------------------------------
+
+```{r}
+
+
+
+```
+
+
+FEC original pdf file
+=====================================
+Click here to view the original pdf filing submitted to the FEC by the Trump inaugural committee. [I'm an inline-style link with title](https://www.google.com "Google's Homepage")
