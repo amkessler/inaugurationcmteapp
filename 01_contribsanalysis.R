@@ -51,3 +51,30 @@ contribs$repubs_conservatives_1989_to_2017 <- parse_number(contribs$repubs_conse
 contribs$dems_liberals_1989_to_2017 <- parse_number(contribs$dems_liberals_1989_to_2017)
 
 saveRDS(contribs, "contribs_saved.rds")
+
+
+names(contribs)
+
+contribs %>% 
+  filter(
+    trump_campaign_2016 != 0 |
+    other_2016_presidential_campaigns != 0 |
+    total_contribs_1989_to_2017 != 0
+  ) %>% 
+  View()
+
+
+contribs %>% 
+  filter(
+    trump_campaign_2016 == 0,
+      other_2016_presidential_campaigns == 0,
+      total_contribs_1989_to_2017 == 0
+  ) %>% 
+  View()
+
+
+contribs %>% 
+  filter(individual_or_organization == "Individual") %>% 
+  group_by(state) %>% 
+  summarise(total = sum(inaug_2017_total)) %>% 
+  arrange(desc(total))
