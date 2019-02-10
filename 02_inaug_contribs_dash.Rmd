@@ -27,6 +27,7 @@ library(RColorBrewer)
 library(htmlwidgets)
 library(htmltools)
 library(tigris)
+library(scales)
 options(tigris_class = "sf")
 
 options(scipen = 999)
@@ -153,7 +154,8 @@ d <- ggplot(data = inaug_ind_bystate, aes(x = state, y = total)) +
 
 d2 <- d + labs(x ="", y = "") +
   theme(legend.title=element_blank()) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(labels = dollar)
 
 dd <- ggplotly(d2) 
 
