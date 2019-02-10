@@ -119,23 +119,23 @@ datatable(contribs_inaug_only,
 
 
 
-Top Groups for Individuals 
+Top Summaries for Individual Donors
 =====================================
 To filter, click on the boxes at the top of the columns. To sort, use the up/down arrows by the column names.
 
 Row 
 -----------------------------------------------------------------------
 
-### Top states with $100K 
+### Top 20 states 
 
 ```{r}
 
 inaug_ind_bystate <- contribs %>% 
-  filter(individual_or_organization == "Individual",
-         inaug_2017_total > 100000) %>% 
+  filter(individual_or_organization == "Individual") %>% 
   group_by(state) %>% 
   summarise(total = sum(inaug_2017_total)) %>% 
-  arrange(desc(total))
+  arrange(desc(total)) %>% 
+  head(20)
 
 #reorder factors to order bars descending
 inaug_ind_bystate <- inaug_ind_bystate %>% 
@@ -165,7 +165,45 @@ dd_nomenu
 
 ```
 
+### Top 20 cities
 
+```{r}
+
+inaug_ind_bycity <- contribs %>% 
+  filter(individual_or_organization == "Individual") %>% 
+  mutate(citystate = paste0(city,", ",state)) %>% 
+  group_by(citystate) %>% 
+  summarise(total = sum(inaug_2017_total)) %>% 
+  arrange(desc(total)) %>% 
+  head(20)
+
+#reorder factors to order bars descending
+inaug_ind_bycity <- inaug_ind_bycity %>% 
+  mutate(
+    citystate = as.factor(citystate),
+    citystate = fct_reorder(citystate, total)
+    )
+
+d <- ggplot(data = inaug_ind_bycity, aes(x = citystate, y = total)) +
+  geom_col(
+    # color = "#848484",
+    fill = "#ffb3ba") + 
+  # coord_flip() + 
+  theme_minimal() +
+  coord_flip()
+
+d2 <- d + labs(x ="", y = "") +
+  theme(legend.title=element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(labels = dollar)
+
+dd <- ggplotly(d2) 
+
+dd_nomenu <- dd %>% config(displayModeBar = FALSE)
+dd_nomenu
+  
+
+```
 
 
 
