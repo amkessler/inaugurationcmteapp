@@ -78,3 +78,16 @@ contribs %>%
   group_by(state) %>% 
   summarise(total = sum(inaug_2017_total)) %>% 
   arrange(desc(total))
+
+
+
+
+#group by orgs
+
+contribs %>% 
+  filter(individual_or_organization == "Individual") %>% 
+  group_by(org_name) %>% 
+  summarise(n(), total = sum(inaug_2017_total)) %>% 
+  arrange(desc(total)) 
+  
+          
