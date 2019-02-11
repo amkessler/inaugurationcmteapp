@@ -1,7 +1,5 @@
 ---
 title: "Trump Inauguration Contributions"
-resource_files:
-- .httr-oauth
 output:
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -19,16 +17,15 @@ library(janitor)
 library(glue)
 library(plotly)
 library(DT)
-library(googlesheets)
+# library(googlesheets)
 library(kableExtra)
-library(leaflet)
-# library(ggmap)
 library(RColorBrewer)
-library(htmlwidgets)
+# library(htmlwidgets)
 library(htmltools)
-library(tigris)
 library(scales)
-options(tigris_class = "sf")
+# library(leaflet)
+# library(tigris)
+# options(tigris_class = "sf")
 
 options(scipen = 999)
 
@@ -119,7 +116,7 @@ datatable(contribs_inaug_only,
 
 
 
-Top Summaries for Individual Donors
+Top Locations for Individual Donors
 =====================================
 To filter, click on the boxes at the top of the columns. To sort, use the up/down arrows by the column names.
 
@@ -209,8 +206,10 @@ dd_nomenu
 
 
 
-Previous donor activities
+Other Contributions
 =====================================
+This table shows who donors to the Trump inauguration have also donated to in the past, according to data compiled by the [Center for Responsive Politics](https://docs.google.com/spreadsheets/d/1MgxCjiw0niZxuSlfUEqbHpiLhrSL97XYOisgTzYbmVc/edit?usp=sharing).
+
 To filter, click on the boxes at the top of the columns. To sort, use the up/down arrows by the column names.
 
 Row {data-height=1000}
@@ -218,7 +217,33 @@ Row {data-height=1000}
 
 ```{r}
 
+contribs_all <- contribs %>% 
+  select(
+    -inaug_2017_total,
+    -ind_contrib_category
+  ) %>% 
+  mutate(
+    individual_or_organization = as.factor(str_to_upper(individual_or_organization)),
+    org_name = str_to_upper(org_name),
+    parent_company = str_to_upper(parent_company)
+  ) %>% 
+  arrange(individual_or_organization, contributor_name)
 
+
+datatable(contribs_all,
+          rownames = FALSE,
+          filter = "top",
+          extensions = 'Buttons', 
+          options = list(searchHighlight = TRUE, bPaginate = FALSE, dom = 'Bfrtip',
+       buttons = c('copy', 'csv', 'excel', 'print')
+          )) %>% 
+      formatCurrency(c("trump_campaign_2016", "other_2016_presidential_campaigns",
+                     "total_contribs_1989_to_2017", "repubs_conservatives_1989_to_2017",
+                     "dems_liberals_1989_to_2017"), digits = 0) %>%
+      # formatStyle("total_amount", color = "darkgreen") %>% 
+      formatStyle('contributor_name', fontWeight = 'bold') 
+
+names(contribs)
 
 ```
 
