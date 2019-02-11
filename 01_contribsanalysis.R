@@ -19,7 +19,7 @@ options(tigris_class = "sf")
 
 # import data from Google Sheet 
 
-# gs_ls()
+gs_ls()
 
 #register google sheet
 inauguration_contribs <- gs_key("1qCG3BxuX42SNMW8u8tQ9HxkkZF-mFffnzTK6PaFxHGQ")
@@ -60,8 +60,7 @@ contribs %>%
     trump_campaign_2016 != 0 |
     other_2016_presidential_campaigns != 0 |
     total_contribs_1989_to_2017 != 0
-  ) %>% 
-  View()
+  ) 
 
 
 contribs %>% 
@@ -69,8 +68,7 @@ contribs %>%
     trump_campaign_2016 == 0,
       other_2016_presidential_campaigns == 0,
       total_contribs_1989_to_2017 == 0
-  ) %>% 
-  View()
+  ) 
 
 
 contribs %>% 
