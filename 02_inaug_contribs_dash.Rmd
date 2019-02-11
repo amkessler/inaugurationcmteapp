@@ -62,7 +62,8 @@ contribs_inaug_only <- contribs %>%
   mutate(
     individual_or_organization = as.factor(str_to_upper(individual_or_organization)),
     org_name = str_to_upper(org_name),
-    parent_company = str_to_upper(parent_company)
+    parent_company = str_to_upper(parent_company),
+    contributor_name = str_to_upper(contributor_name)
   ) %>% 
   arrange(individual_or_organization, desc(total_amount))
 
