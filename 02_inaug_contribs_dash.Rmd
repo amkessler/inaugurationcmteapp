@@ -76,7 +76,7 @@ datatable(contribs_inaug_only,
           )) %>% 
       formatCurrency('total_amount', digits = 0) %>% 
       formatStyle("total_amount", color = "darkgreen") %>% 
-      formatStyle('contributor_name', fontWeight = 'bold') 
+      formatStyle(c('contributor_name', 'total_amount'), fontWeight = 'bold') 
       # formatStyle("salary", color = "darkred") %>% 
     #   formatStyle(
     #   'inaug_2017_total',
@@ -89,30 +89,59 @@ datatable(contribs_inaug_only,
 
 ```
 
-<!-- Row -->
-<!-- ----------------------------------------------------------------------- -->
+Row
+-----------------------------------------------------------------------
 
-<!-- ### Box 1 {data-padding=10} -->
+### Total dollars from individuals
 
-<!-- ```{r} -->
-<!-- valueBox("15", icon = "fa-pencil") -->
+```{r}
+sum_inddonors <- contribs %>% 
+  filter(individual_or_organization == "Individual") %>% 
+  summarise(total = sum(inaug_2017_total))
 
-<!-- ``` -->
 
-<!-- ### Box 2 -->
+valueBox(dollar(sum_inddonors$total), icon = "fa-money")
 
-<!-- ```{r} -->
-<!-- valueBox("15", icon = "fa-pencil") -->
+```
 
-<!-- ``` -->
 
-<!-- ### Box 3 -->
+### Number of individual donors 
 
-<!-- ```{r} -->
-<!-- valueBox("15", icon = "fa-pencil") -->
+```{r}
+num_inddonors <- contribs %>% 
+  filter(individual_or_organization == "Individual") %>% 
+  nrow()
 
-<!-- ``` -->
 
+valueBox(num_inddonors, icon = "fa-user")
+
+```
+
+
+### Total dollars from organizations
+
+```{r}
+sum_orgdonors <- contribs %>% 
+  filter(individual_or_organization == "Organization") %>% 
+  summarise(total = sum(inaug_2017_total))
+
+
+valueBox(dollar(sum_orgdonors$total), icon = "fa-money")
+
+```
+
+
+### Number of organizational donors 
+
+```{r}
+num_orgdonors <- contribs %>% 
+  filter(individual_or_organization == "Organization") %>% 
+  nrow()
+
+
+valueBox(num_orgdonors, icon = "fa-building")
+
+```
 
 
 
@@ -208,7 +237,7 @@ dd_nomenu
 
 Other Contributions
 =====================================
-This table shows who donors to the Trump inauguration have also donated to in the past, according to data compiled by the [Center for Responsive Politics](https://docs.google.com/spreadsheets/d/1MgxCjiw0niZxuSlfUEqbHpiLhrSL97XYOisgTzYbmVc/edit?usp=sharing).
+This table shows who donors to the Trump inauguration have also donated to other campaigns in the past, according to [data](https://docs.google.com/spreadsheets/d/1qCG3BxuX42SNMW8u8tQ9HxkkZF-mFffnzTK6PaFxHGQ/edit?usp=sharing) compiled by the [Center for Responsive Politics](https://www.opensecrets.org).
 
 To filter, click on the boxes at the top of the columns. To sort, use the up/down arrows by the column names.
 
@@ -219,7 +248,6 @@ Row {data-height=1000}
 
 contribs_all <- contribs %>% 
   select(
-    -inaug_2017_total,
     -ind_contrib_category
   ) %>% 
   mutate(
