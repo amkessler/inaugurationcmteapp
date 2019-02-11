@@ -118,7 +118,7 @@ datatable(contribs_inaug_only,
 
 Top Locations for Individual Donors
 =====================================
-To filter, click on the boxes at the top of the columns. To sort, use the up/down arrows by the column names.
+These charts show the breakdown of where individual donors to Trump's inaugural committee hail from, according to the committee's federal election filing. 
 
 Row 
 -----------------------------------------------------------------------
@@ -144,7 +144,7 @@ inaug_ind_bystate <- inaug_ind_bystate %>%
 d <- ggplot(data = inaug_ind_bystate, aes(x = state, y = total)) +
   geom_col(
     # color = "#848484",
-    fill = "#ffb3ba") + 
+    fill = "#957DAD") + 
   # coord_flip() + 
   theme_minimal() +
   coord_flip()
